@@ -1,9 +1,10 @@
 //
 const header = document.querySelector('.header');
-const main = document.querySelector('#main');
+const main = document.querySelector('#oqueeh');
 
 const rect = main.getBoundingClientRect().bottom;
-const tamanhoHeader = 60;
+const tamanhoHeader = 57.33
+console.log(tamanhoHeader);
 
 function showHeader() {
 
@@ -37,7 +38,16 @@ function getScrollTopByHref(element) {
 
 function scrollToIdOnClick(event) { //verificar qual item recebeu click
     event.preventDefault(); //retira o padrão.
-    const to = getScrollTopByHref(event.target) - tamanhoHeader; //focar no elemento
+    var to = getScrollTopByHref(event.target) - (tamanhoHeader); //focar no elemento
+    // if(to > window.pageYOffset)
+    // {
+    //     to = to - (2 * tamanhoHeader) ;
+    // }
+    // else if (to < window.pageYOffset)
+    // {
+    //     to = to - tamanhoHeader;
+    // }
+    
     scrollToPosition(to);
 }
 
@@ -46,7 +56,7 @@ function scrollToPosition(to) {
     //   top: to,
     //   behavior: "smooth",
     // });
-    smoothScrollTo(0, to, 1000);
+    smoothScrollTo(0, to, 1500);
 }
 
 /** CODIGO PRONTO
@@ -81,45 +91,23 @@ function smoothScrollTo(endX, endY, duration) {
     }, 1000 / 60); // 60 fps
 };
 
-// animar ao scroll
+/* carrossel */
 
-const debounce = function(func, wait, immediate) { //regula o número de repetição de uma function.
-    let timeout;
-    return function(...args) {
-        const context = this;
-        const later = function() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-        };
-        const callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-    };
-};
+document.addEventListener('DOMContentLoaded', function () {
+    var stream = document.querySelector('.gallery__stream');
+    var items = document.querySelectorAll('.gallery__item');
+    var prev = document.querySelector('.gallery__prev');
+    var next = document.querySelector('.gallery__next');
 
-const targetAnime = document.querySelectorAll('[data-anime]');
-const animationClass = 'animate';
+    prev.addEventListener('click', function () {
+        stream.insertBefore(items[items.length - 1], items[0]);
+        items = document.querySelectorAll('.gallery__item');
+    });
 
-function animeScroll() {
-    const windowTop = window.pageYOffset + ((window.innerHeight) * 0.75); //calculo para a animação acontecer numa região especifica indiferente do tamanho da tela.
-    targetAnime.forEach(function(element) {
-        if ((windowTop) > element.offsetTop) {
-            element.classList.add(animationClass);
-        } else {
-            element.classList.remove(animationClass);
-        }
-    })
-}
+    next.addEventListener('click', function () {
+        stream.appendChild(items[0]);
+        items = document.querySelectorAll('.gallery__item');
+    });
+});
 
-animeScroll(); // executar a função ao entrar no site;
-
-if (targetAnime.length) { //verifica se tem item no targetAnime, caso não, ele não executa a função.
-    window.addEventListener('scroll', debounce(function() {
-        animeScroll();
-    }, 200));
-}
-
-// set no slide 1
-
-window.location = "#slide-1";
+/* fim carrossel */
