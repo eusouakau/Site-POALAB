@@ -93,21 +93,33 @@ function smoothScrollTo(endX, endY, duration) {
 
 /* carrossel */
 
-document.addEventListener('DOMContentLoaded', function () {
-    var stream = document.querySelector('.gallery__stream');
-    var items = document.querySelectorAll('.gallery__item');
-    var prev = document.querySelector('.gallery__prev');
-    var next = document.querySelector('.gallery__next');
+var slideIndex = 0;
+showSlides(slideIndex);
 
-    prev.addEventListener('click', function () {
-        stream.insertBefore(items[items.length - 1], items[0]);
-        items = document.querySelectorAll('.gallery__item');
-    });
+// Next/previous controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
 
-    next.addEventListener('click', function () {
-        stream.appendChild(items[0]);
-        items = document.querySelectorAll('.gallery__item');
-    });
-});
+// Thumbnail image controls
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "flex";
+  dots[slideIndex-1].className += " active";
+}
 
 /* fim carrossel */
